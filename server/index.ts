@@ -8,7 +8,7 @@ import { aiEngineAvailable, cacheIsFresh, generateAIIdeas } from "./aiEngine.ts"
 import type { HistoryEntry, PillarPost } from "../src/data/types.ts";
 
 const app = express();
-const PORT = process.env.PORT ? Number(process.env.PORT) : 4001;
+const PORT = process.env.API_PORT ? Number(process.env.API_PORT) : 4001;
 
 app.use(cors());
 app.use(express.json());
@@ -225,6 +225,15 @@ app.get("/api/content-feed", async (req, res) => {
   });
 });
 
-app.listen(PORT, () => {
-  console.log(`Growth Console API listening on http://localhost:${PORT}`);
-});
+app
+  .listen(PORT, () => {
+    console.log(`Growth Console API listening on http://localhost:${PORT}`);
+  })
+  .on("error", (err: NodeJS.ErrnoException) => {
+    if (err.code === "EADDRINUSE") {
+      console.error(`Port ${PORT} is already in use. Set API_PORT in .env to use a different port.`);
+    } else {
+      console.error("Failed to start API server:", err);
+    }
+    process.exit(1);
+  });
