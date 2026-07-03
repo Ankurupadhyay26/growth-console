@@ -3,6 +3,7 @@ import { api, type ContentFeedResponse, type SprintInfo } from "../lib/api";
 import { todayISO } from "../lib/sprint";
 import { isLinkedInDay, computeStreak } from "../lib/dailyChecklist";
 import { showToast } from "../lib/toast";
+import { LINKEDIN_PILLARS, INSTAGRAM_PILLARS } from "../data/seedBank";
 import type { PostLog } from "../data/types";
 
 const DAY_NAMES = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -24,8 +25,8 @@ export function Today() {
   const [checklist, setChecklist] = useState<ChecklistState>({ date: todayISO(), completed: [] });
   const [checklistHistory, setChecklistHistory] = useState<ChecklistState[]>([]);
   const [loading, setLoading] = useState(true);
-  const [liPick, setLiPick] = useState(0);
-  const [igPick, setIgPick] = useState(0);
+  const [liOverride, setLiOverride] = useState<Idea | null>(null);
+  const [igOverride, setIgOverride] = useState<Idea | null>(null);
 
   const today = todayISO();
   const dow = new Date(today + "T00:00:00").getDay();
@@ -61,8 +62,8 @@ export function Today() {
   const usingAI = feed.engineUsed === "ai" && feed.aiIdeas;
   const liIdeas: Idea[] = (usingAI ? feed.aiIdeas!.linkedin : feed.ruleBased.linkedin.ideas) ?? [];
   const igIdeas: Idea[] = (usingAI ? feed.aiIdeas!.instagram : feed.ruleBased.instagram.ideas) ?? [];
-  const liIdea = liIdeas[liPick] ?? liIdeas[0];
-  const igIdea = igIdeas[igPick] ?? igIdeas[0];
+  const liIdea = liOverride ?? liIdeas[0];
+  const igIdea = igOverride ?? igIdeas[0];
 
   const liPosted = !!postLog[today]?.linkedin;
   const igPosted = !!postLog[today]?.instagram;
@@ -122,20 +123,24 @@ export function Today() {
               <PostRow
                 platform="linkedin"
                 idea={liIdea}
-                alternates={liIdeas.filter((_, i) => i !== liPick).slice(0, 2)}
+                alternates={liIdeas.filter((i) => i.headline !== liIdea.headline).slice(0, 2)}
+                pillarOptions={LINKEDIN_PILLARS as unknown as string[]}
                 posted={liPosted}
                 onPost={() => markPost("linkedin", liIdea)}
-                onPickAlternate={(idea) => setLiPick(liIdeas.indexOf(idea))}
+                onPickAlternate={(idea) => setLiOverride(idea)}
+                onCustomTopic={(idea) => setLiOverride(idea)}
               />
             )}
             {igIdea && (
               <PostRow
                 platform="instagram"
                 idea={igIdea}
-                alternates={igIdeas.filter((_, i) => i !== igPick).slice(0, 2)}
+                alternates={igIdeas.filter((i) => i.headline !== igIdea.headline).slice(0, 2)}
+                pillarOptions={INSTAGRAM_PILLARS as unknown as string[]}
                 posted={igPosted}
                 onPost={() => markPost("instagram", igIdea)}
-                onPickAlternate={(idea) => setIgPick(igIdeas.indexOf(idea))}
+                onPickAlternate={(idea) => setIgOverride(idea)}
+                onCustomTopic={(idea) => setIgOverride(idea)}
               />
             )}
             <CheckRow
@@ -201,20 +206,34 @@ function PostRow({
   platform,
   idea,
   alternates,
+  pillarOptions,
   posted,
   onPost,
   onPickAlternate,
+  onCustomTopic,
 }: {
   platform: "linkedin" | "instagram";
   idea: Idea;
   alternates: Idea[];
+  pillarOptions: string[];
   posted: boolean;
   onPost: () => void;
   onPickAlternate: (idea: Idea) => void;
+  onCustomTopic: (idea: Idea) => void;
 }) {
   const [showAlt, setShowAlt] = useState(false);
+  const [showCustom, setShowCustom] = useState(false);
+  const [customPillar, setCustomPillar] = useState(pillarOptions[0]);
+  const [customHeadline, setCustomHeadline] = useState("");
   const color = platform === "linkedin" ? "var(--color-linkedin-400)" : "var(--color-instagram-400)";
   const label = platform === "linkedin" ? "LinkedIn" : "Instagram";
+
+  function submitCustom() {
+    if (!customHeadline.trim()) return;
+    onCustomTopic({ pillar: customPillar, headline: customHeadline.trim() });
+    setCustomHeadline("");
+    setShowCustom(false);
+  }
 
   return (
     <div
@@ -238,16 +257,34 @@ function PostRow({
           </p>
         </div>
       </label>
-      {!posted && alternates.length > 0 && (
-        <div className="pl-7">
-          <button
-            onClick={() => setShowAlt((v) => !v)}
-            className="text-[11px] text-graphite-500 hover:text-graphite-300 underline underline-offset-2"
-          >
-            {showAlt ? "Hide other topics" : "Not feeling this topic? See alternatives"}
-          </button>
+
+      {!posted && (
+        <div className="pl-7 flex flex-col gap-2">
+          <div className="flex flex-wrap gap-x-3 gap-y-1">
+            {alternates.length > 0 && (
+              <button
+                onClick={() => {
+                  setShowAlt((v) => !v);
+                  setShowCustom(false);
+                }}
+                className="text-[11px] text-graphite-500 hover:text-graphite-300 underline underline-offset-2"
+              >
+                {showAlt ? "Hide other topics" : "Not feeling this topic? See alternatives"}
+              </button>
+            )}
+            <button
+              onClick={() => {
+                setShowCustom((v) => !v);
+                setShowAlt(false);
+              }}
+              className="text-[11px] text-graphite-500 hover:text-graphite-300 underline underline-offset-2"
+            >
+              {showCustom ? "Cancel" : "Or type your own topic"}
+            </button>
+          </div>
+
           {showAlt && (
-            <ul className="mt-2 flex flex-col gap-1.5">
+            <ul className="flex flex-col gap-1.5">
               {alternates.map((alt, i) => (
                 <li key={i}>
                   <button
@@ -262,6 +299,39 @@ function PostRow({
                 </li>
               ))}
             </ul>
+          )}
+
+          {showCustom && (
+            <div className="flex flex-col gap-2 p-2.5 rounded-md border border-graphite-750 bg-graphite-950/40">
+              <div className="flex gap-2">
+                <select
+                  value={customPillar}
+                  onChange={(e) => setCustomPillar(e.target.value)}
+                  className="input text-xs py-1"
+                >
+                  {pillarOptions.map((p) => (
+                    <option key={p} value={p}>
+                      {p}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <textarea
+                value={customHeadline}
+                onChange={(e) => setCustomHeadline(e.target.value)}
+                placeholder="What do you want to post about today?"
+                rows={2}
+                className="input text-xs resize-none"
+              />
+              <button
+                onClick={submitCustom}
+                disabled={!customHeadline.trim()}
+                className="self-start text-xs px-3 py-1.5 rounded-md font-medium disabled:opacity-40"
+                style={{ backgroundColor: color, color: "#0a0c10" }}
+              >
+                Use this topic
+              </button>
+            </div>
           )}
         </div>
       )}
