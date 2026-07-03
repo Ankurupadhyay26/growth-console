@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { api, type ContentFeedResponse } from "../lib/api";
-import { TimeBudget } from "../components/TimeBudget";
 import { LINKEDIN_DAY_PILLAR, LINKEDIN_SEED, INSTAGRAM_SEED } from "../data/seedBank";
 import { todayISO } from "../lib/sprint";
 import { showToast } from "../lib/toast";
@@ -178,8 +177,6 @@ export function ContentFeed() {
       </div>
 
       {showBatch && <BatchPlanning />}
-
-      <TimeBudget />
     </div>
   );
 }
