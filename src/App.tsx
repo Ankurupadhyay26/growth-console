@@ -25,16 +25,6 @@ function App() {
     api.getSprint().then(setSprint).catch(() => {});
   }, [refreshKey]);
 
-  useEffect(() => {
-    function onVisible() {
-      if (document.visibilityState === "visible") {
-        setRefreshKey((k) => k + 1);
-      }
-    }
-    document.addEventListener("visibilitychange", onVisible);
-    return () => document.removeEventListener("visibilitychange", onVisible);
-  }, []);
-
   function handleRefresh() {
     setRefreshKey((k) => k + 1);
     showToast("Dashboard refreshed", "info");
