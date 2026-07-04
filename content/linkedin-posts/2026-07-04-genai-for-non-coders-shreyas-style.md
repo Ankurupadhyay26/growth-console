@@ -45,3 +45,7 @@ Forces the anchor-to-real-workflow step. Practical, tool-based, built for people
 The people who win with AI over the next few years won't be the best coders.
 
 They'll be the ones who understood this distinction before everyone else did.
+
+Curious where you are in this sequence — still building the mental model, still trying to make prompting repeatable, or already anchored to a real workflow?
+
+Drop it in the comments. And if you're a non-coder trying to get past step 1, save this post — you'll want the course list when you're ready.
