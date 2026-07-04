@@ -3,49 +3,49 @@ pillar: Hot Take on AI/GenAI Hype
 platform: linkedin
 date: 2026-07-04
 status: draft
-voice: Shreyas Doshi style
+voice: Shreyas Doshi style (researched)
+goal: saves + shares
 ---
 
-Most non-coders think they have an AI skills gap.
+I get a version of this question a lot now:
 
-They don't. They have an AI positioning gap.
+"I'm not a coder. Where do I even start with AI?"
 
-Here's the distinction that almost nobody makes explicit:
+Here's my honest answer.
 
-Learning AI = understanding architectures, tokens, fine-tuning.
-Working with AI = using it to produce better judgment and faster output in your actual job.
+Most people treat this as a skills problem. It's not. It's a sequencing problem.
 
-These are not the same skill. Most "learn AI in 2026" content teaches the first one to people who only need the second. That mismatch is why so many smart, non-technical people try AI for a week and quietly give up.
+You don't need to learn AI. You need to learn how to work with AI. Those are two different skills — and almost every course teaches the wrong one first, to the wrong audience.
 
-If I were starting from zero coding background today, here is the sequence I'd actually follow — in order, because the order is the point:
+Here's the sequence I'd use if I were starting today, with zero coding background:
 
-1/ Build the capability map before you touch a tool
-Not the math. A clear model of what LLMs are reliably good at, and where they confidently fail. Skip this and every prompt you write later is a guess dressed up as a strategy.
+1/ Mental model before tool
+Before you open anything, get clear on what LLMs are actually good at — and where they fail confidently, without telling you. Skip this, and every prompt you write later is a guess wearing the costume of a strategy.
 
-2/ Turn prompting into a system, not a party trick
-"Tips and tricks" don't transfer across tasks. A reusable structure does — the same way a good PM reuses a decision framework instead of re-deriving it every time.
+2/ Prompting as a system, not a party trick
+A list of "10 prompts that will blow your mind" doesn't transfer to your job. What transfers is a structure you can reuse across tasks — the same way you'd reuse a decision framework instead of re-deriving it from scratch every time.
 
-3/ Anchor it to one real workflow, immediately
-Pick the task you already do weekly. Rebuild that one workflow around AI before you touch a second use case. Breadth without depth is how you end up with 10 half-used tools and zero habits.
+3/ One real workflow, immediately
+Pick the task you already do every week. Rebuild that one workflow around AI before you touch a second use case. Breadth without depth is how people end up with ten tools open and zero habits formed.
 
-The 3 courses I'd use to execute this, in this order:
+Simple. Not easy.
+
+Three courses that map to this sequence, in order:
 
 1. Generative AI for Everyone — Andrew Ng, DeepLearning.AI
 https://www.coursera.org/learn/generative-ai-for-everyone
-Builds the capability map. No coding, no math, built for decision-makers.
+For step 1. No coding, no math — gives you the model, not the mechanics.
 
 2. Prompt Engineering for ChatGPT — Vanderbilt University, Dr. Jules White
 https://www.coursera.org/learn/prompt-engineering
-Converts prompting from intuition into a repeatable system.
+For step 2. Turns prompting from intuition into something repeatable.
 
 3. Google AI Essentials — Google
 https://www.coursera.org/specializations/ai-essentials-google
-Forces the anchor-to-real-workflow step. Practical, tool-based, built for people who need output, not model architecture.
+For step 3. Practical, tool-based — built for people who need output, not architecture.
 
-The people who win with AI over the next few years won't be the best coders.
+One caveat, because I'd be doing you a disservice otherwise: don't take this sequence and run with it just because it's mine, or because this post did numbers. Test it against your own job, your own week, your own constraints. If a step doesn't fit, skip it.
 
-They'll be the ones who understood this distinction before everyone else did.
+If you know someone stuck at step zero — "I should probably learn AI but I don't know where to start" — send them this post instead of another 10-tool listicle. That's more useful to them than anything else in their feed today.
 
-Curious where you are in this sequence — still building the mental model, still trying to make prompting repeatable, or already anchored to a real workflow?
-
-Drop it in the comments. And if you're a non-coder trying to get past step 1, save this post — you'll want the course list when you're ready.
+And if this was useful to you: save it. You won't remember this course order in three weeks. Your saved posts will.
