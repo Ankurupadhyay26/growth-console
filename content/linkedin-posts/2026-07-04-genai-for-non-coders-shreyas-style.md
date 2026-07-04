@@ -7,7 +7,9 @@ voice: Shreyas Doshi style (researched)
 goal: saves + shares
 ---
 
-I get a version of this question a lot now:
+Writing this from a cafe in Bir, laptop battery at 40%, wifi that drops every time the wind picks up outside.
+
+Not exactly a place built for typing about AI. But it's given me more time to actually think than most weeks at a desk do — and I keep coming back to a question people keep asking me:
 
 "I'm not a coder. Where do I even start with AI?"
 
@@ -49,3 +51,5 @@ One caveat, because I'd be doing you a disservice otherwise: don't take this seq
 If you know someone stuck at step zero — "I should probably learn AI but I don't know where to start" — send them this post instead of another 10-tool listicle. That's more useful to them than anything else in their feed today.
 
 And if this was useful to you: save it. You won't remember this course order in three weeks. Your saved posts will.
+
+[Written from Bir — the wifi held up just long enough.]
